@@ -14,7 +14,7 @@ import (
 func main() {
 	fmt.Println("Main - init")
 
-	clientService := client.NewService(client.AppleClient{}, client.GoogleClient{}, client.StripeClient{})
+	clientService := client.NewService(client.ItunesClient{}, client.GoogleClient{}, client.StripeClient{})
 
 	transactions := []transaction.ITransaction{}
 	for i := 0; i < 10; i++ {
@@ -22,7 +22,7 @@ func main() {
 
 		switch transactionType {
 		case 0:
-			transactions = append(transactions, transaction.NewAppleTransaction("token_apple_"+strconv.FormatInt(int64(i), 10)))
+			transactions = append(transactions, transaction.NewItunesTransaction("token_itunes_"+strconv.FormatInt(int64(i), 10)))
 		case 1:
 			transactions = append(transactions, transaction.NewGoogleTransaction("token_google_"+strconv.FormatInt(int64(i), 10)))
 		case 2:

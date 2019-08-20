@@ -9,10 +9,10 @@ import (
 
 func TestAppleClient(t *testing.T) {
 
-	appleClient := client.AppleClient{}
-	appleTransaction := transaction.NewAppleTransaction("token_apple")
+	itunesClient := client.ItunesClient{}
+	itunesTransaction := transaction.NewItunesTransaction("token_itunes")
 
-	var receipt = appleClient.ValidateTransaction(appleTransaction.GetTransaction())
+	var receipt = itunesClient.ValidateTransaction(itunesTransaction.GetTransaction())
 
 	fmt.Println(receipt)
 	if len(receipt.GetReceipt()) == 0 {

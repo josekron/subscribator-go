@@ -8,20 +8,20 @@ import (
 )
 
 const (
-	APPLE  = "apple"
+	ITUNES = "itunes"
 	GOOGLE = "google"
 	STRIPE = "stripe"
 )
 
 type ClientService struct {
-	appleClient  AppleClient
+	itunesClient ItunesClient
 	googleClient GoogleClient
 	stripeClient StripeClient
 }
 
-func NewService(appleClient AppleClient, googleClient GoogleClient, stripeClient StripeClient) *ClientService {
+func NewService(appleClient ItunesClient, googleClient GoogleClient, stripeClient StripeClient) *ClientService {
 	var service = &ClientService{
-		appleClient:  appleClient,
+		itunesClient: appleClient,
 		googleClient: googleClient,
 		stripeClient: stripeClient,
 	}
@@ -44,8 +44,8 @@ func (cs ClientService) ValidateTransactions(transactions []transaction.ITransac
 		var choosenClient IClient
 
 		switch t.GetProvider() {
-		case APPLE:
-			choosenClient = cs.appleClient
+		case ITUNES:
+			choosenClient = cs.itunesClient
 		case GOOGLE:
 			choosenClient = cs.googleClient
 		case STRIPE:
