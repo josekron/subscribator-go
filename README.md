@@ -1,0 +1,2 @@
+# subscribator-go
+ 
