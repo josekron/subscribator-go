@@ -19,9 +19,9 @@ type ClientService struct {
 	stripeClient StripeClient
 }
 
-func NewService(appleClient ItunesClient, googleClient GoogleClient, stripeClient StripeClient) *ClientService {
+func NewService(itunesClient ItunesClient, googleClient GoogleClient, stripeClient StripeClient) *ClientService {
 	var service = &ClientService{
-		itunesClient: appleClient,
+		itunesClient: itunesClient,
 		googleClient: googleClient,
 		stripeClient: stripeClient,
 	}
@@ -31,7 +31,7 @@ func NewService(appleClient ItunesClient, googleClient GoogleClient, stripeClien
 /*
 ValidateTransactions: receives a list of transactions and validates each transaction with their provider client.
 
-TODO:: Now each transaction (apple, google, stripe) returns a token but they will return different parameters for the transaction.
+TODO:: Now each Transaction (apple, google, stripe) contains a String transaction but it can be different depending on each supplier.
 The same for the clients, they will request to the API of each supplier.
 */
 func (cs ClientService) ValidateTransactions(transactions []transaction.ITransaction) []receipt.IReceipt {
