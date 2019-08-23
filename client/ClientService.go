@@ -2,8 +2,6 @@ package client
 
 import (
 	"fmt"
-	receipt "subscribator-go/client/receipt"
-	transaction "subscribator-go/client/transaction"
 	"sync"
 )
 
@@ -34,14 +32,14 @@ ValidateTransactions: receives a list of transactions and validates each transac
 TODO:: Now each Transaction (apple, google, stripe) contains a String transaction but it can be different depending on each supplier.
 The same for the clients, they will request to the API of each supplier.
 */
-func (cs ClientService) ValidateTransactions(transactions []transaction.ITransaction) []receipt.IReceipt {
+func (cs ClientService) ValidateTransactions(transactions []Transaction) []Receipt {
 
-	receipts := make([]receipt.IReceipt, len(transactions))
+	receipts := make([]Receipt, len(transactions))
 	var wg sync.WaitGroup
 
 	for i, t := range transactions {
 
-		var choosenClient IClient
+		var choosenClient ProviderClient
 
 		switch t.GetProvider() {
 		case ITUNES:
@@ -66,7 +64,7 @@ func (cs ClientService) ValidateTransactions(transactions []transaction.ITransac
 	return receipts
 }
 
-func validateTransaction(client IClient, transaction string, wg *sync.WaitGroup, receipts []receipt.IReceipt, numReceipt int) {
+func validateTransaction(client ProviderClient, transaction string, wg *sync.WaitGroup, receipts []Receipt, numReceipt int) {
 
 	go func() {
 		defer wg.Done()
