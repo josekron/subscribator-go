@@ -8,7 +8,6 @@ import (
 	"math/rand"
 	"strconv"
 	client "subscribator-go/client"
-	transaction "subscribator-go/client/transaction"
 )
 
 func main() {
@@ -16,17 +15,17 @@ func main() {
 
 	clientService := client.NewService(client.ItunesClient{}, client.GoogleClient{}, client.StripeClient{})
 
-	transactions := []transaction.ITransaction{}
+	transactions := []client.Transaction{}
 	for i := 0; i < 10; i++ {
 		transactionType := rand.Intn(3)
 
 		switch transactionType {
 		case 0:
-			transactions = append(transactions, transaction.NewItunesTransaction("token_itunes_"+strconv.FormatInt(int64(i), 10)))
+			transactions = append(transactions, client.NewItunesTransaction("token_itunes_"+strconv.FormatInt(int64(i), 10)))
 		case 1:
-			transactions = append(transactions, transaction.NewGoogleTransaction("token_google_"+strconv.FormatInt(int64(i), 10)))
+			transactions = append(transactions, client.NewGoogleTransaction("token_google_"+strconv.FormatInt(int64(i), 10)))
 		case 2:
-			transactions = append(transactions, transaction.NewStripeTransaction("token_stripe_"+strconv.FormatInt(int64(i), 10)))
+			transactions = append(transactions, client.NewStripeTransaction("token_stripe_"+strconv.FormatInt(int64(i), 10)))
 		}
 	}
 
