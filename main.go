@@ -6,6 +6,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"os"
 	"strconv"
 	client "subscribator-go/client"
 )
@@ -13,8 +14,16 @@ import (
 func main() {
 	fmt.Println("Main - init")
 
-	clientService := client.NewService(client.ItunesClient{}, client.GoogleClient{}, client.StripeClient{})
+	var itunesURL = os.Getenv("ITUNES_URL")
+	var itunesPassword = os.Getenv("ITUNES_PWD")
 
+	itunesClient := client.NewItunesClient(itunesURL, itunesPassword)
+	googleClient := client.NewGoogleClient()
+	stripeClient := client.NewStripeClient()
+
+	clientService := client.NewService(*itunesClient, *googleClient, *stripeClient)
+
+	//TODO:: Remove it and get transactions from another service
 	transactions := []client.Transaction{}
 	for i := 0; i < 10; i++ {
 		transactionType := rand.Intn(3)
