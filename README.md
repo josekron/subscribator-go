@@ -15,6 +15,7 @@ ITUNES_URL=https://sandbox.itunes.apple.com/verifyReceipt ITUNES_PWD=XXX go run 
 Docker:
 
 docker build -t subscribator-go-docker .
+
 docker run -it -p 8080:8080 subscribator-go-docker
 
 ### Remaining tasks ###
