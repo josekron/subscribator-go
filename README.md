@@ -2,7 +2,10 @@
  
 A simple project to handle the subscription renewals from different providers (Itunes, Google, Stripe).
 
-Also, to understand better the use of the goroutines.
+Also: 
+
+- Understand better the use of the goroutines.
+- Convert string json to struct.
 
 ### Description ###
 
@@ -20,7 +23,6 @@ docker run -it -p 8080:8080 subscribator-go-docker
 
 ### Remaining tasks ###
 
-- Parse String response from Itunes.
 - Implement Google client.
 - Implement Stripe client.
 - Implement endpoints or an interface to comunicate with other services to receive the list of receipts for validation and also return the responses. Options:
