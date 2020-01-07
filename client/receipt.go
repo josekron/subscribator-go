@@ -1,41 +1,72 @@
 package client
 
+import (
+	"encoding/json"
+)
+
+// Receipt : receipt which extends Itunes, Google and Stripe receipt
 type Receipt interface {
 	GetReceipt() string
 	GetTransaction() string
 	GetProvider() string
 }
 
-// Itunes
+/////////////
+// Itunes  //
+/////////////
 
+// ItunesReceipt : contains receipt and latest_receipt_info from Itunes response
 type ItunesReceipt struct {
-	provider    string
-	transaction string
-	receipt     string
+	Provider      string
+	Transaction   string
+	Receipt       VerifyReceipt `json:"receipt"`
+	LatestReceipt []ReceiptInfo `json:"latest_receipt_info"`
+}
+
+type VerifyReceipt struct {
+	ReceiptType            string        `json:"receipt_type"`
+	BundleID               string        `json:"bundle_id"`
+	OriginalPurchaseDateMs string        `json:"original_purchase_date_ms"`
+	InAppReceipt           []ReceiptInfo `json:"in_app"`
+}
+
+type ReceiptInfo struct {
+	ProductID              string `json:"product_id"`
+	TransactionID          string `json:"transaction_id"`
+	OriginalTransactionID  string `json:"original_transaction_id"`
+	PurchaseDateMs         string `json:"purchase_date_ms"`
+	OriginalPurchaseDateMs string `json:"original_purchase_date_ms"`
+	IsTrialPeriod          string `json:"is_trial_period"`
 }
 
 func NewItunesReceipt(transaction, receipt string) *ItunesReceipt {
-	var itunesReceipt = &ItunesReceipt{
-		provider:    "itunes",
-		transaction: transaction,
-		receipt:     receipt,
-	}
+
+	itunesReceipt := &ItunesReceipt{}
+	json.Unmarshal([]byte(receipt), itunesReceipt)
+
+	itunesReceipt.Provider = "itunes"
+	itunesReceipt.Transaction = transaction
+
 	return itunesReceipt
 }
 
 func (t ItunesReceipt) GetReceipt() string {
-	return t.receipt
+	sReceipt, _ := json.Marshal(t.Receipt)
+	sLatestReceiptInfo, _ := json.Marshal(t.LatestReceipt)
+	return "receipt:" + string(sReceipt) + "\nlatest_receipt_info:" + string(sLatestReceiptInfo)
 }
 
 func (t ItunesReceipt) GetTransaction() string {
-	return t.transaction
+	return t.Transaction
 }
 
 func (t ItunesReceipt) GetProvider() string {
-	return t.provider
+	return t.Provider
 }
 
-// Google
+/////////////
+// Google  //
+/////////////
 
 type GoogleReceipt struct {
 	provider    string
@@ -64,7 +95,9 @@ func (t GoogleReceipt) GetProvider() string {
 	return t.provider
 }
 
-// Stripe
+/////////////
+// Stripe  //
+/////////////
 
 type StripeReceipt struct {
 	provider    string
